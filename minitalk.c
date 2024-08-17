@@ -6,15 +6,25 @@
 /*   By: hladeiro <hladeiro@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 17:42:42 by hladeiro          #+#    #+#             */
-/*   Updated: 2024/08/15 17:58:19 by hladeiro         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:25:55 by hladeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	write_message(int signal)
+void	write_message(int sig)
 {
-	ft_printf("signal recieve %d \n", signal);
+	static int	bit;
+	static int	i;
+	if (sig == SIGUSR1)
+		i |= 1 <<  bit;
+	bit ++;
+	if (bit == 8)
+	{
+		ft_printf("%c", i);
+		bit = 0;
+		i = 0;
+	}
 }
 
 void	server_handler(int signal)
