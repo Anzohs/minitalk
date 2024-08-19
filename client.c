@@ -6,7 +6,7 @@
 /*   By: hladeiro <hladeiro@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 18:36:23 by hladeiro          #+#    #+#             */
-/*   Updated: 2024/08/17 18:19:24 by hladeiro         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:30:05 by hladeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	main(int argc, char **argv)
 		while (argv[2][i] != '\0')
 		{
 			send_bits(pid, argv[2][i]);
-			i++;	
-	}
+			i++;
+		}
 	}
 	else
 		ft_printf("Wrong number of arguments.\n");

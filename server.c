@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.c                                         :+:      :+:    :+:   */
+/*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hladeiro <hladeiro@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 17:42:42 by hladeiro          #+#    #+#             */
-/*   Updated: 2024/08/18 15:52:31 by hladeiro         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:51:55 by hladeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "server.h"
 
 void	write_message(int sig)
 {
 	static int	bit;
 	static int	i;
-	
+
 	if (sig == SIGUSR1)
-		i |= 1 <<  bit;
+		i |= 1 << bit;
 	bit++;
 	if (bit == 8)
 	{
@@ -32,8 +32,6 @@ void	server_handler(int signal)
 {
 	if (signal == SIGUSR1 || signal == SIGUSR2)
 		write_message(signal);
-	else
-		ft_printf("signal not supported \n");
 }
 
 int	main(void)
