@@ -6,7 +6,7 @@
 /*   By: hladeiro <hladeiro@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 17:42:42 by hladeiro          #+#    #+#             */
-/*   Updated: 2024/08/19 15:51:55 by hladeiro         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:17:49 by hladeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@ void	server_handler(int signal)
 
 int	main(void)
 {
-	g_s_action.sa_flags = 0;
-	g_s_action.sa_handler = server_handler;
+	struct sigaction	s_action;
+
+	ft_bzero(&s_action, sizeof(struct sigaction));
+	s_action.sa_flags = 0;
+	s_action.sa_handler = server_handler;
 	ft_printf("server pid : %i \n", getpid());
-	sigaction(SIGUSR1, &g_s_action, NULL);
-	sigaction(SIGUSR2, &g_s_action, NULL);
+	sigaction(SIGUSR1, &s_action, NULL);
+	sigaction(SIGUSR2, &s_action, NULL);
 	while (1)
 		pause();
 }
