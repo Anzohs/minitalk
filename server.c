@@ -6,7 +6,7 @@
 /*   By: hladeiro <hladeiro@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 17:42:42 by hladeiro          #+#    #+#             */
-/*   Updated: 2024/08/20 18:17:49 by hladeiro         ###   ########.fr       */
+/*   Updated: 2024/08/20 20:22:03 by hladeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	write_message(int sig)
 	bit++;
 	if (bit == 8)
 	{
-		ft_printf("%c", i);
+		write(1, &i, 1);
 		bit = 0;
 		i = 0;
 	}

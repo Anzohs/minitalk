@@ -6,7 +6,7 @@
 /*   By: hladeiro <hladeiro@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 18:36:23 by hladeiro          #+#    #+#             */
-/*   Updated: 2024/08/20 18:16:34 by hladeiro         ###   ########.fr       */
+/*   Updated: 2024/08/20 20:17:15 by hladeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	send_bits(int pid, char c)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		usleep(600);
+		usleep(700);
 		bit++;
 	}
 }
