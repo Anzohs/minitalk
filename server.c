@@ -6,7 +6,7 @@
 /*   By: hladeiro <hladeiro@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 17:42:42 by hladeiro          #+#    #+#             */
-/*   Updated: 2024/08/20 22:30:58 by hugoladeiro      ###   ########.fr       */
+/*   Updated: 2024/08/26 19:35:50 by hladeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include <stdlib.h>
 #include <sys/signal.h>
 #include <unistd.h>
+#include <sys/types.h>
 
 static void	print_free(char *string)
 {
 	ft_printf("%s", string);
 	if (*string)
 		free(string);
-
 }
 
 static void	write_string(char *c, int s, size_t len)
@@ -33,40 +33,45 @@ static void	write_string(char *c, int s, size_t len)
 		i = 0;
 }
 
+static void	handle_data(t_data *data, int pid)
+{
+	if (data->len && data->bit == 8)
+	{
+		write_string(data->c, data->i, data->len);
+		data->bit = 0;
+		data->i = 0;
+		data->z++;
+	}
+	if (data->len && data->len == data->z)
+	{
+		print_free(data->c);
+		kill(pid, SIGUSR1);
+		data->len = 0;
+		data->bit = 0;
+		data->i = 0;
+		data->z = 0;
+	}
+}
+
 static void	server_handler(int signal, siginfo_t *siginfo, void *context)
 {
-	static size_t	len;
-	static char		*c;
-	static int	bit;
-	static int	i;
-	static int 	z;
+	static t_data	data;
 
-	if (signal == SIGUSR1)
-		i |= 1 << bit;
-	bit++;
-	if (len == 0 && bit == 32)
+	if (signal == SIGUSR1 && !data.len)
+		data.i |= 1 << (31 - data.bit);
+	else if (signal == SIGUSR1)
+		data.i |= 1 << (7 - data.bit);
+	data.bit++;
+	if (data.len == 0 && data.bit == 32)
 	{
-		len = i;
-		i = 0;
-		bit = 0;
-		c = (char *)ft_calloc(len + 1, sizeof(char));
+		data.len = data.i;
+		data.i = 0;
+		data.bit = 0;
+		data.c = (char *)ft_calloc(data.len + 2, sizeof(char));
+		data.c[data.len] = '\n';
 	}
-	if (len != 0 && bit == 8)
-	{
-		write_string(c, i, len);
-		bit = 0;
-		i = 0;
-		z++;
-	}
-	if (len && len == z)
-	{
-		print_free(c);
-		kill(siginfo->si_pid, SIGUSR1);
-		len = 0;
-		bit = 0;
-		i = 0;
-		z = 0;
-	}
+	else
+		handle_data(&data, siginfo->si_pid);
 	kill(siginfo->si_pid, SIGUSR2);
 }
 
@@ -76,7 +81,8 @@ int	main(void)
 	size_t				len;
 
 	ft_bzero(&s_action, sizeof(struct sigaction));
-	s_action.sa_handler = (void(*)(int))server_handler;
+	s_action.sa_sigaction = server_handler;
+	s_action.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_action, NULL);
 	sigaction(SIGUSR2, &s_action, NULL);
 	ft_printf("server pid : %i \n", getpid());

@@ -16,6 +16,15 @@
 # include <signal.h>
 # include "ft_printf/ft_printf.h"
 
+typedef struct s_data
+{
+	char	*c;
+	size_t	len;
+	int		bit;
+	int		i;
+	int		z;
+}		t_data;
+
 void	signal_handler(int signal);
 
 #endif

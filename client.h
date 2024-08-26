@@ -16,10 +16,7 @@
 # include "ft_printf/ft_printf.h"
 # define ERROR "The client program takes 2 arguments"
 
-
 void	send_len(size_t len, int pid);
 void	send_bits(int pid, char c);
-
-int g_bool = 0;
 
 #endif
